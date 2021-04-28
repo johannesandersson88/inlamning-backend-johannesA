@@ -1,5 +1,6 @@
 const { app } = require('./core');
 const { db, update } = require('./db');
+const lights = require('./lights');
 
 app.listen(3000, () => {
     console.log('API for smart home 1.1 up n running.')
@@ -9,47 +10,100 @@ app.listen(3000, () => {
 
 const devices = db.get('devices');
 
-app.put('/lights/bedroom/on', (req, res) => {
+app.use('/lights', lights)
 
-    let hela = devices.find({ id: "LIG1" }).assign({ on: true }).value()
+app.get('/camera', (req, res) => {
 
-    update()
+    if (req.query.state === "on") {
 
-    res.send(`Lampan med namn ${hela.name} har tänts!`)
+        let camera = devices.find({ id: "CAM1" })
+            .assign({ on: true })
+            .value()
+
+        update()
+        res.send(`${camera.type} see you.`)
+    } else {
+
+        let camera = devices.find({ id: "CAM1" })
+            .assign({ on: false })
+            .value()
+
+        update()
+        res.send(`${camera.type} cant see.`)
+    }
 })
 
-app.put('/lights/bedroom/off', (req, res) => {
+app.get('/vacuum', (req, res) => {
 
-    let hela = devices.find({ id: "LIG1" })
-        .assign({ on: false })
-        .value()
-    update()
+    if (req.query.state === "on") {
 
-    res.send(`Lampan med namn ${hela.name} har släckts!`)
+        let vacuum = devices.find({ id: "VAC1" })
+            .assign({ on: true })
+            .value()
+
+        update()
+        res.send(`${vacuum.type} is rollin.`)
+    } else {
+
+        let vacuum = devices.find({ id: "VAC1" })
+            .assign({ on: false })
+            .value()
+
+        update()
+        res.send(`${vacuum.type} have parked.`)
+    }
 })
 
-app.get('/lights/livingroom/on', (req, res) => {
-    let hela = devices.find({ id: "LIG2" })
-        .assign({ on: true })
-        .value()
-    update()
 
-    res.send(`Lampan med namn ${hela.name} har tänts!`)
+app.get('/blinder', (req, res) => {
+
+    if (req.query.state === "down") {
+
+        let blinder = devices.find({ id: "BLI1" })
+            .assign({ on: true })
+            .value()
+
+        update()
+        res.send(`${blinder.type} are down.`)
+    } else if (req.query.state === "up") {
+
+        let blinder = devices.find({ id: "BLI1" })
+            .assign({ on: false })
+            .value()
+
+        update()
+        res.send(`${blinder.type} are up..`)
+    } else {
+        res.send('Try put it down or up')
+    }
 })
 
-app.get('/lights/livingroom/off', (req, res) => {
+app.get('/airco/:number', (req, res) => {
 
-    let hela = devices.find({ id: "LIG2" })
-        .assign({ on: false })
-        .value()
-    update()
+    console.log(req.params.number)
 
-    res.send(`Lampan med namn ${hela.name} har släckts!`)
+    let temp = req.params.number;
+
+    if (req.query.state === "on") {
+
+        let ac = devices.find({ id: "AC1" })
+            .assign({ on: true, temperature: temp })
+            .value()
+
+        update()
+        res.send(`${ac.type} is now flowing at ${temp} degrees`)
+    } else {
+
+        let ac = devices.find({ id: "AC1" })
+            .assign({ on: false })
+            .value()
+
+        update()
+        res.send(`${ac.type} is off`)
+    }
 })
 
-app.get('/lol/:id', (req, res) => {
-    let id = req.params.id
-    let hala = devices.find({ id: id }).assign({ on: true }).value();
-    update()
-    res.send(hala)
-})
+
+
+
+
