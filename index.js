@@ -92,7 +92,7 @@ app.get('/airco/:number', (req, res) => {
 
         update()
         res.send(`${ac.type} is now flowing at ${temp} degrees`)
-    } else {
+    } else if (req.query.state === "off") {
 
         let ac = devices.find({ id: "AC1" })
             .assign({ on: false })
@@ -100,6 +100,8 @@ app.get('/airco/:number', (req, res) => {
 
         update()
         res.send(`${ac.type} is off`)
+    } else {
+        res.send('You have to turn the AC on or off, at desired temperature.')
     }
 })
 
