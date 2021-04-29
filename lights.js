@@ -4,62 +4,116 @@ const { db, update } = require('./db');
 
 const devices = db.get('devices');
 
-lights.get('/bedroom/on', (req, res) => {
 
-    let lightOne = devices.find({ id: "LIG1" }).assign({ on: true }).value()
 
-    update()
+lights.get('/bedroom', (req, res) => {
 
-    res.send(`Lampan med namn ${lightOne.name} har tänts!`)
+    if (req.query.state === "on") {
+
+        let lightOne = devices.find({ id: "LIG1" })
+            .assign({ on: true })
+            .value()
+
+        update()
+        res.send(`${lightOne.type} is on.`)
+    } else {
+
+        let lightOne = devices.find({ id: "LIG1" })
+            .assign({ on: false })
+            .value()
+
+        update()
+        res.send(`${lightOne.type} is off.`)
+    }
 })
 
-lights.get('/bedroom/off', (req, res) => {
+lights.get('/livingroom', (req, res) => {
 
-    let lightOne = devices.find({ id: "LIG1" })
-        .assign({ on: false })
-        .value()
-    update()
+    if (req.query.state === "on") {
 
-    res.send(`Lampan med namn ${lightOne.name} har släckts!`)
+        let lightTwo = devices.find({ id: "LIG2" })
+            .assign({ on: true })
+            .value()
+
+        update()
+        res.send(`${lightTwo.type} is on.`)
+    } else {
+
+        let lightTwo = devices.find({ id: "LIG2" })
+            .assign({ on: false })
+            .value()
+
+        update()
+        res.send(`${lightTwo.type} is off.`)
+    }
 })
 
-lights.get('/lights/livingroom/on', (req, res) => {
-    let hela = devices.find({ id: "LIG2" })
-        .assign({ on: true })
-        .value()
-    update()
+lights.get('/garden', (req, res) => {
 
-    res.send(`Lampan med namn ${hela.name} har tänts!`)
+    if (req.query.state === "on") {
+
+        let lightThree = devices.find({ id: "LIG3" })
+            .assign({ on: true })
+            .value()
+
+        update()
+        res.send(`${lightThree.type} is on.`)
+    } else {
+
+        let lightThree = devices.find({ id: "LIG3" })
+            .assign({ on: false })
+            .value()
+
+        update()
+        res.send(`${lightThree.type} is off.`)
+    }
 })
 
-lights.get('/lights/livingroom/off', (req, res) => {
 
-    let hela = devices.find({ id: "LIG2" })
-        .assign({ on: false })
-        .value()
-    update()
+lights.get('/christmas', (req, res) => {
 
-    res.send(`Lampan med namn ${hela.name} har släckts!`)
-})
+    if (req.query.state === "on") {
+        let lightThree = devices.find({ id: "LIG3" })
+            .assign({ on: true, color: "#FF0000" })
+            .value()
 
-lights.get('/lights/garden/on', (req, res) => {
+        update()
 
-    let hela = devices.find({ id: "LIG3" })
-        .assign({ on: true })
-        .value()
-    update()
+        let lightTwo = devices.find({ id: "LIG2" })
+            .assign({ on: true, color: "#228B22" })
+            .value()
 
-    res.send(`Lampan med namn ${hela.name} har tänts!`)
-})
+        update()
 
-lights.get('/lights/garden/off', (req, res) => {
+        let lightOne = devices.find({ id: "LIG1" })
+            .assign({ on: true, color: "#1E90FF" })
+            .value()
 
-    let hela = devices.find({ id: "LIG3" })
-        .assign({ on: false })
-        .value()
-    update()
+        update()
+        res.send(`${lightThree.type} and ${lightTwo.type} and ${lightOne.type} is on`)
+    } else {
+        let lightThree = devices.find({ id: "LIG3" })
+            .assign({ on: false, color: "#FF0000" })
+            .value()
 
-    res.send(`Lampan med namn ${hela.name} har släckts!`)
+        update()
+
+        let lightTwo = devices.find({ id: "LIG2" })
+            .assign({ on: false, color: "#228B22" })
+            .value()
+
+        update()
+
+        let lightOne = devices.find({ id: "LIG1" })
+            .assign({ on: false, color: "#1E90FF" })
+            .value()
+
+        update()
+        res.send(`${lightThree.type} and ${lightTwo.type} and ${lightOne.type} is off`)
+    }
+
+
+
 })
 
 module.exports = lights;
