@@ -6,6 +6,10 @@ const devices = db.get('devices');
 
 
 
+
+
+
+// Uppbyggda på samma sätt som i Index.js. Kollar query state, beroende på värde ändrar man on till true eller false. 
 lights.get('/bedroom', (req, res) => {
 
     if (req.query.state === "on") {
@@ -69,6 +73,7 @@ lights.get('/garden', (req, res) => {
     }
 })
 
+// Sätter igång alla lampor i olika färger, annars uppbyggd på samma sätt som övriga. 
 
 lights.get('/christmas', (req, res) => {
 
@@ -116,6 +121,7 @@ lights.get('/christmas', (req, res) => {
 
 })
 
+// Exporterar för att användas i Index.js
 module.exports = lights;
 
 
