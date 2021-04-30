@@ -1,3 +1,5 @@
+Run npm install first. 
+
 # inlamning-backend-johannesA
 Inlamingsuppgift SmartHOMEAPI
 
